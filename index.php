@@ -27,7 +27,7 @@ $query_work = "SELECT * FROM work";
 $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
 if($result)
 {
-    $rows = mysqli_num_rows($result); // количество полученных строк
+    $rows = mysqli_num_rows($result); 
      
     print "<table class='table table-bordere table-hover'><thead><tr><th>Id</th><th>Name</th><th>Work Place</th></tr></thead>";
     for ($i = 0 ; $i < $rows ; ++$i)
@@ -39,14 +39,14 @@ if($result)
     }
     print "</table>";
      
-    // очищаем результат
+   
     mysqli_free_result($result);
 }
 
 $result = mysqli_query($link, $query_work) or die("Ошибка " . mysqli_error($link)); 
 if($result)
 {
-    $rows = mysqli_num_rows($result); // количество полученных строк
+    $rows = mysqli_num_rows($result); 
      
     print "<table class='table table-bordere table-hover'><thead><tr><th>Id</th><th>Name</th><th>Adress</th></tr></thead>";
     for ($i = 0 ; $i < $rows ; ++$i)
@@ -58,7 +58,7 @@ if($result)
     }
     print "</table>";
      
-    // очищаем результат
+   
     mysqli_free_result($result);
 }
 
