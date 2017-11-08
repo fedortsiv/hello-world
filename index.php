@@ -15,75 +15,65 @@
 
 </head>
 <body>
-<div class="row">
+
 <?php
 
-$link = mysqli_connect("localhost", "root", "root", "test");
+$mysqli = new mysqli("localhost", "root", "root", "test");
 
-
-$query = "SELECT * FROM user";
-$query_city = "SELECT `idcity`, `name_city` FROM city ";
-
-$result = mysqli_query($link, $query) or die("Помилка " . mysqli_error($link));
-$result_2table = mysqli_query($link, $query_city) or die("Помилка " . mysqli_error($link));
-
-#while ($obj = mysqli_fetch_object($result_2table)) {
-#        printf ("%s (%s)\n", $obj->idcity, $obj->name_city);
-#        }
-
-if($result)
-{
-    $rows = mysqli_num_rows($result); 
-    $obj = mysqli_fetch_object($result_2table);
-        var_dump($obj);
-     
-    print "<table class='col-6 table table-bordere table-hover'><thead><tr><th>Id</th><th>Name</th><th>Work Place</th></tr></thead>";
-    for ($i = 0 ; $i < $rows ; ++$i)
-    {
-        
-        $row = mysqli_fetch_object($result);
-        print "<tr>";
-            for ($j = 0 ; $j < 2 ; ++$j) {
-                
-                $zapyt = "SELCT `name_city` FROM city WHERE `idcity` = intval($row->city_idcity)";
-                echo "$row->city_idcity";
-                printf ("%s (%s) [%s]\n", $row->iduser, $row->name, $city = mysqli_query($link, $zapyt));
-
-
-
-                for ($k=0; $k <= $row->city_idcity; $k++) {                     
-                        
-
-                        if (intval($row->city_idcity) == intval($obj->name_city)) {
-
-                               
-                               
-                               printf("[%s]", $obj->name_city);
-
-                        }
-                }
-
-                #if ( $row->city_idc) {
-                        # code...
-                #}
-                #print "<td>$row[$j]</td>";
-        }
-        print "</tr>";
-    }
-    print "</table>";
-
-    printf ("%s (%s) 'jkdhjfdhfhjdo'\n", $obj->idcity, $obj->name_city);
-     
-   
-    mysqli_free_result($result);
+if ($mysqli->connect_errno) {
+    echo "Не удалось подключиться к MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+    exit();
 }
 
 
-mysqli_close($link);
+$query = $mysqli -> query ("SELECT * FROM user");
+$query_city = $mysqli -> query ("SELECT idcity, name_city FROM city");
+
+
+
+ #записуєм значееня одного запиту в масив 
+        for ($i=1; $i <= $query_city->num_rows; $i++) { 
+             $row2 = $query_city->fetch_array(MYSQLI_ASSOC);
+                $count[$i] = $row2;
+
+        }
+
+        $first_names = array_column($row2, 'idcity');
+        print_r($first_names);
+       
+
+
+# Функція для заміни наданого значення на значення з масиву 
+function FunctionName ( $value)
+        {
+        
+        $int = (integer)$value;
+        var_dump($int);
+        $znaczcz = array_filter($count, $int, ARRAY_FILTER_USE_KEY);
+        return $znaczcz;
+        #return $row2["city_idcity"];
+        
+        }
+
+
+#вивід на екран
+while ($row = $query->fetch_array(MYSQLI_ASSOC)) {
+
+        if ($row["city_idcity"]) {
+                $znacz = FunctionName($row["city_idcity"]);
+        }
+        printf ("%s (%s) [%d]\n", $row["iduser"], $row["name"], $znacz);
+ 
+}
+
+
+$query -> close();
+$query_city -> close();
+$mysqli -> close();
+
 
 ?>
-
-</div>
+        
 
 	<script src="js/bootstrap.min.js"></script>
 <!--	<script src="js/main.js"></script> -->
