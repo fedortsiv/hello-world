@@ -32,37 +32,36 @@ $query_city = $mysqli -> query ("SELECT idcity, name_city FROM city");
 
 
  #записуєм значееня одного запиту в масив 
-        for ($i=1; $i <= $query_city->num_rows; $i++) { 
-             $row2 = $query_city->fetch_array(MYSQLI_ASSOC);
-                $count[$i] = $row2;
 
+        while ( $row = $query_city->fetch_array(MYSQLI_ASSOC)) {
+                 $count[] = $row;
         }
 
-        $first_names = array_column($row2, 'idcity');
-        print_r($first_names);
-       
 
 
 # Функція для заміни наданого значення на значення з масиву 
-function FunctionName ( $value)
-        {
+function FunctionName ( $value, $count ) {
         
         $int = (integer)$value;
-        var_dump($int);
-        $znaczcz = array_filter($count, $int, ARRAY_FILTER_USE_KEY);
-        return $znaczcz;
-        #return $row2["city_idcity"];
-        
-        }
+
+        $item = null;
+        foreach($count as $struct) {
+            if ($int == $struct["idcity"]) {
+                $item = $struct["name_city"];
+                return($item);
+        break;
+            }
+        }        
+}
 
 
 #вивід на екран
 while ($row = $query->fetch_array(MYSQLI_ASSOC)) {
 
         if ($row["city_idcity"]) {
-                $znacz = FunctionName($row["city_idcity"]);
+                $znacz = FunctionName($row["city_idcity"], $count);
         }
-        printf ("%s (%s) [%d]\n", $row["iduser"], $row["name"], $znacz);
+        printf ("%s (%s) [%s]\n", $row["iduser"], $row["name"], $znacz);
  
 }
 
